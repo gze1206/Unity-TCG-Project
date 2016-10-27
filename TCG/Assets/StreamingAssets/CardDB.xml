@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CardList>
+	<Field Name="테스트용" Explane="테스트용 카드입니다." Type="0" EventName="TestCard"/>
+	<Field Name="테스트용2" Explane="모두 외쳐 22!" Type="1" EventName="TestCard"/>
+</CardList>
