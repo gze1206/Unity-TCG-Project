@@ -1,22 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Card : MonoBehaviour
-{
-    public int Index;
-    public CardData Data;
-
-    public void SetData(CardData Data)
-    {
-        this.Data = Data;
-    }
-
-    public void SetData(string name, string explane, CardType type, string eventName)
-    {
-        Data = new CardData(name, explane, type, eventName);
-    }
-}
-
 public enum CardType
 {
     Magic = 0,
@@ -29,12 +13,15 @@ public struct CardData
     public string Explane;
     public CardType Type;
     public string EventName;
+    public int Attack, Health;
 
-    public CardData(string name, string explane, CardType type, string eventName)
+    public CardData(string name, string explane, CardType type,string eventName, int atk = 0, int hp = 0)
     {
         Name = name;
         Explane = explane;
         Type = type;
         EventName = eventName;
+        Attack = atk;
+        Health = hp;
     }
 }

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MagicList>
+	<Field Name="돌진" Explane="내 필드의 하수인 수만큼 적에게 피해를 줍니다." EventName="SprintCard"/>
+	<Field Name="우린 부우자가 될거야!" Explane="내 손에 중복되는 카드가 한 장도 없으면 나의 체력을 최대 체력으로 회복합니다." EventName="RenoJackson"/>
+</MagicList>

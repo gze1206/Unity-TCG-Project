@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MinionList>
+	<Field Name="위습" Explane="이 하수인의 체력이 0이 될 때까지 이 하수인은 필드에 지속됩니다." EventName="GOD_CARD" Attack="1" Health="1"/>
+	<Field Name="용암 광전사" Explane="이 하수인은 내 필드에 공격력이 1 이하인 하수인이 없으면 필드에서 소멸합니다." EventName="MgmCard" Attack="3" Health="1"/>
+</MinionList>
