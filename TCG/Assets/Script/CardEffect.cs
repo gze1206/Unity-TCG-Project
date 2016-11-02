@@ -46,16 +46,39 @@ public class CardEffect : MonoBehaviour
 
     public IEnumerator RenoJackson(GameObject obj)
     {
-        List<GameObject> list = Camera.main.GetComponent<GameManager>().Field;
+        List<GameObject> list = Camera.main.GetComponent<GameManager>().Slot;
+        Debug.Log(list.Count);
+        bool temp = true;
         for (int i = 0; i<list.Count; i++)
         {
             for (int j = 0; j<list.Count; j++)
             {
-                if (list[i].Equals(list[j]) && i != j) yield return null;
+                if (list[i].GetComponent<CardSlot>().Data.Name.Equals(string.Empty)) continue;
+                if (list[j].GetComponent<CardSlot>().Data.Name.Equals(string.Empty)) continue;
+                temp = (list[i].GetComponent<CardSlot>().Data.Name.Equals(list[j].GetComponent<CardSlot>().Data.Name) && i != j);
+                Debug.Log("I : " + list[i].GetComponent<CardSlot>().Data.Name + " " + i + " J : " + list[j].GetComponent<CardSlot>().Data.Name + " " + j + " | " + temp);
             }
         }
-        Camera.main.GetComponent<GameManager>().Player.NowHP = Camera.main.GetComponent<GameManager>().Player.MaxHP;
-        Camera.main.GetComponent<GameManager>().DrawUI();
+        //Debug.Log((temp) ? "부우자" : "실패");
+        if (!temp)
+        {
+            Camera.main.GetComponent<GameManager>().Player.NowHP = Camera.main.GetComponent<GameManager>().Player.MaxHP;
+            Camera.main.GetComponent<GameManager>().DrawUI();
+        }
+        Destroy(obj);
+        yield return null;
+    }
+
+    public IEnumerator HealthTwice(GameObject obj)
+    {
+        int temp = Camera.main.GetComponent<GameManager>().Field.Count;
+
+        for (int i = 0; i<temp; i++)
+        {
+            CardSlot dest = Camera.main.GetComponent<GameManager>().Field[i].GetComponent<CardSlot>();
+            if (dest.Data.Name.Equals(string.Empty) || dest.Data.Type == CardType.Magic) continue;
+            else dest.Data.Health *= 2;
+        }
         Destroy(obj);
         yield return null;
     }

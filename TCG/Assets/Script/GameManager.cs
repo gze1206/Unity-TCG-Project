@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public GameObject EnemyInfo, EnemyState, PlayerState, PlayerName;
     public GameObject AttackBtn, DrawBtn;
     public GameObject cardSlot;
+    public GameObject gameOverWin;
     public List<GameObject> Slot = new List<GameObject>(), Field = new List<GameObject>();
     public DrawList drawList = DrawList.FromAllList;
     public int CardCnt = 0;
@@ -39,9 +40,9 @@ public class GameManager : MonoBehaviour
 	
     public void Start()
     {
-        StageManager.Get().AddStage(new Stage(10, 10, "STAGE1", 5, 1));
-        StageManager.Get().AddStage(new Stage(30, 30, "STAGE2", 5, 5));
-        StageManager.Get().AddStage(new Stage(100, 100, "STAGE3", 10, 10));
+        StageManager.Get().AddStage(new Stage(10, 10, "STAGE1", 5, 1, new List<MobType>() { MobType.None }));
+        StageManager.Get().AddStage(new Stage(30, 30, "STAGE2", 5, 3, new List<MobType>() { MobType.DMGtoMinion }));
+        StageManager.Get().AddStage(new Stage(100, 100, "STAGE3", 10, 5, new List<MobType>() { MobType.KillMinion }));
         Boss = StageManager.Get().GetNow().Boss;
         DrawBtn.SetActive(false);
         MinionList = new List<CardData>();
@@ -136,6 +137,15 @@ public class GameManager : MonoBehaviour
                 NextStage();
             }
             else StageManager.Get().GetNow().TurnEnd();
+            DestroyDeadCard();
+        }
+    }
+
+    public void DestroyDeadCard()
+    {
+        for (int i = 0; i<Field.Count; i++)
+        {
+            if (Field[i].GetComponent<CardSlot>().Data.Type == CardType.Minion && Field[i].GetComponent<CardSlot>().Data.Health <= 0) Destroy(Field[i--]);
         }
     }
 
@@ -145,9 +155,11 @@ public class GameManager : MonoBehaviour
         PlayerState.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = Player.NowHP.ToString();
         PlayerState.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = "/ " + Player.MaxHP.ToString();
         EnemyInfo.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = Boss.Name;
-        EnemyInfo.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "TYPE";
+        EnemyInfo.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = StageManager.Get().GetNow().type_str;
         EnemyState.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = Boss.NowHP.ToString();
         EnemyState.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = "/ " + Boss.MaxHP.ToString();
+        if (IsGameOver) gameOverWin.SetActive(true);
+        else gameOverWin.SetActive(false);
     }
 
     public int Heal(Character ch, int _hp)
@@ -165,10 +177,10 @@ public class GameManager : MonoBehaviour
     {
         if (Player.NowHP <= 0) IsGameOver = true;
 
-        if ( IsGameOver && ( Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) ) )
+        if ( IsGameOver )
         {
-            Debug.Log("Game Over!");
-            Application.Quit();
+            DrawUI();
+            if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))) Application.Quit();
         }
     }
 

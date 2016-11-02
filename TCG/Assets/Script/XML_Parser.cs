@@ -81,7 +81,7 @@ public class XML_Parser : MonoBehaviour
                     data.Health = int.Parse(child.GetNamedItem("Health").Value);
                     list.Add(data);
 #if UNITY_EDITOR
-                    Debug.Log("하수인 : " + data.Name + " | " + data.Attack.ToString() + " / " + data.Health.ToString());
+                    Debug.Log("Card Loaded - 하수인 : " + data.Name + " | " + data.Attack.ToString() + " / " + data.Health.ToString());
 #endif
                 }
             }
@@ -99,7 +99,7 @@ public class XML_Parser : MonoBehaviour
                     data.Health = 0;
                     list.Add(data);
 #if UNITY_EDITOR
-                    Debug.Log("주문 : " + data.Name);
+                    Debug.Log("Card Loaded - 주문 : " + data.Name);
 #endif
                 }
             }

@@ -6,6 +6,7 @@ public class CardSlot : MonoBehaviour
 {
     public CardData Data = new CardData(string.Empty, string.Empty, CardType.Minion, string.Empty);
     public GameObject CardView, ATK, HP;
+    GameObject FieldObj = null;
     bool IsPointOn = false, IsDrag = false, CanMove = true;
     Vector3 StartPoint;
 
@@ -67,10 +68,8 @@ public class CardSlot : MonoBehaviour
             {
                 Ray ray = new Ray(transform.position, Vector3.forward); //레이캐스트 준비
                 RaycastHit hit;                                         //레이캐스트 준비
-                Debug.Log("1");
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                 {
-                    Debug.Log("2");
                     if (hit.transform.CompareTag("Field"))
                     {
                         Debug.Log("소환 : " + Data.Name);
@@ -80,6 +79,9 @@ public class CardSlot : MonoBehaviour
                         Camera.main.GetComponent<GameManager>().DeleteAndInsertToSlot(gameObject, temp);
                         Camera.main.GetComponent<GameManager>().AddToField(gameObject);
                         Camera.main.GetComponent<GameManager>().CardCnt--;
+                        transform.position = hit.transform.position;
+                        hit.transform.gameObject.SetActive(false);
+                        FieldObj = hit.transform.gameObject;
                     }
                     else transform.position = StartPoint;
                 }
@@ -116,5 +118,6 @@ public class CardSlot : MonoBehaviour
     public void OnDestroy()
     {
         Camera.main.GetComponent<GameManager>().DeleteFromField(gameObject);
+        if (FieldObj != null) FieldObj.SetActive(true);
     }
 }
